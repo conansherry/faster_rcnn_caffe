@@ -30,6 +30,7 @@ using google::protobuf::io::CodedInputStream;
 using google::protobuf::io::ZeroCopyOutputStream;
 using google::protobuf::io::CodedOutputStream;
 using google::protobuf::Message;
+using google::protobuf::io::ArrayInputStream;
 
 bool ReadProtoFromTextFile(const char* filename, Message* proto) {
   int fd = open(filename, O_RDONLY);
@@ -39,6 +40,11 @@ bool ReadProtoFromTextFile(const char* filename, Message* proto) {
   delete input;
   close(fd);
   return success;
+}
+
+bool ReadProtoFromTextBuffer(const char* data, size_t len, Message* proto) {
+    ArrayInputStream input(data, len);
+    return google::protobuf::TextFormat::Parse(&input, proto);
 }
 
 void WriteProtoToTextFile(const Message& proto, const char* filename) {
@@ -62,6 +68,18 @@ bool ReadProtoFromBinaryFile(const char* filename, Message* proto) {
   delete raw_input;
   close(fd);
   return success;
+}
+
+bool ReadProtoFromBinary(ZeroCopyInputStream* input, Message *proto) {
+    CodedInputStream coded_input(input);
+    coded_input.SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
+
+    return proto->ParseFromCodedStream(&coded_input);
+}
+
+bool ReadProtoFromBinaryBuffer(const char* data, size_t len, Message* proto) {
+    ArrayInputStream raw_input(data, len);
+    return ReadProtoFromBinary(&raw_input, proto);
 }
 
 void WriteProtoToBinaryFile(const Message& proto, const char* filename) {

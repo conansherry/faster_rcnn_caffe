@@ -90,11 +90,25 @@ void ReadNetParamsFromTextFileOrDie(const string& param_file,
   UpgradeNetAsNeeded(param_file, param);
 }
 
+void ReadNetParamsFromTextBufferOrDie(const char* data, size_t len,
+    NetParameter* param) {
+    CHECK(ReadProtoFromTextBuffer(data, len, param))
+        << "Failed to parse NetParameter buffer";
+    UpgradeNetAsNeeded("memory buffer", param);
+}
+
 void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
                                       NetParameter* param) {
   CHECK(ReadProtoFromBinaryFile(param_file, param))
       << "Failed to parse NetParameter file: " << param_file;
   UpgradeNetAsNeeded(param_file, param);
+}
+
+void ReadNetParamsFromBinaryBufferOrDie(const char* data, size_t len,
+    NetParameter* param) {
+    CHECK(ReadProtoFromBinaryBuffer(data, len, param))
+        << "Failed to parse NetParameter buffer";
+    UpgradeNetAsNeeded("memory buffer", param);
 }
 
 bool NetNeedsV0ToV1Upgrade(const NetParameter& net_param) {

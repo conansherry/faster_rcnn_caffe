@@ -10,10 +10,9 @@
 #include "opencv2/opencv.hpp"
 
 #define RPN_PRE_NMS_TOP_N  6000
-#define RPN_POST_NMS_TOP_N 150
+#define RPN_POST_NMS_TOP_N 100
 #define RPN_NMS_THRESH     0.7
 #define RPN_MIN_SIZE       16
-#define IMDB_NUM_CLS       2
 
 namespace caffe {
 

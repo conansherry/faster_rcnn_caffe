@@ -16,7 +16,11 @@ bool UpgradeNetAsNeeded(const string& param_file, NetParameter* param);
 // Read parameters from a file into a NetParameter proto message.
 void ReadNetParamsFromTextFileOrDie(const string& param_file,
                                     NetParameter* param);
+void ReadNetParamsFromTextBufferOrDie(const char* data, size_t len,
+                                    NetParameter* param);
 void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
+                                      NetParameter* param);
+void ReadNetParamsFromBinaryBufferOrDie(const char* data, size_t len,
                                       NetParameter* param);
 
 // Return true iff any layer contains parameters specified using
