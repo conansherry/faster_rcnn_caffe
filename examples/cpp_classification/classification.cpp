@@ -350,7 +350,7 @@ struct DetectBox
 
 int main(int argc, char** argv)
 {
-    std::shared_ptr<Net<float> > net;
+    boost::shared_ptr<Net<float> > net;
     net.reset(new Net<float>("F:/workspace/20180122/linux/test.prototxt", TEST));
     net->CopyTrainedLayersFrom("F:/workspace/20180122/linux/test.caffemodel");
 
